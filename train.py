@@ -52,9 +52,32 @@ def parse_arguments():
         help="The device to run training on. Options: 'cpu', 'cuda'. Default: 'cuda'"
     )
 
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=24,
+        help="Number of workers for data loading. Default: 24"
+    )
+
+    parser.add_argument(
+        "--batch",
+        type=int,
+        default=72,
+        help="Batch size for training. Default: 72"
+    )
+
+    parser.add_argument(
+        "--plots",
+        type=bool,
+        default=True,
+        nargs='?',
+        const=True,
+        help="Plot training loss and mAP metrics. Default: True"
+    )
+
     return parser.parse_args()
 
-def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device):
+def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device, workers, batch, plots):
     """
     Main function to train a YOLO model.
 
@@ -65,6 +88,9 @@ def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device):
         epochs (int): The number of training epochs.
         imgsz (int): Input image size.
         device (str): The device to run training on. Options: 'cpu', 'cuda'.
+        workers (int): Number of workers for data loading.
+        batch (int): Batch size for training.
+        plots (bool): Plot training loss and mAP metrics.
     """
     # Load the YOLO model from the specified path.
     model = YOLO(model_path)
@@ -75,7 +101,10 @@ def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device):
         epochs=epochs,        # Number of training epochs.
         imgsz=imgsz,          # Input image size.
         device=device,        # Device to run training on ('cpu' or 'cuda').
-        project=project_dir   # Project directory to save logs and results.
+        project=project_dir,  # Project directory to save logs and results.
+        workers=workers,      # Number of workers for data loading.
+        batch=batch,          # Batch size for training.
+        plots=plots           # Plot training loss and mAP metrics.
     )
 
     return results
@@ -91,5 +120,8 @@ if __name__ == '__main__':
         project_dir=args.project,
         epochs=args.epochs,
         imgsz=args.imgsz,
-        device=args.device
+        device=args.device,
+        workers=args.workers,
+        batch=args.batch,
+        plots=args.plots
     )
