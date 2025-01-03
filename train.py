@@ -55,15 +55,15 @@ def parse_arguments():
     parser.add_argument(
         "--workers",
         type=int,
-        default=24,
-        help="Number of workers for data loading. Default: 24"
+        default=8,
+        help="Number of workers for data loading. Default: 8"
     )
 
     parser.add_argument(
         "--batch",
         type=int,
-        default=72,
-        help="Batch size for training. Default: 72"
+        default=16,
+        help="Batch size for training. Default: 16"
     )
 
     parser.add_argument(
@@ -75,9 +75,18 @@ def parse_arguments():
         help="Plot training loss and mAP metrics. Default: True"
     )
 
+    parser.add_argument(
+        "--resume",
+        type=bool,
+        default=False,
+        nargs='?',
+        const=True,
+        help="Resume training if previous results exist. Default: False"
+    )
+
     return parser.parse_args()
 
-def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device, workers, batch, plots):
+def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device, workers, batch, plots, resume):
     """
     Main function to train a YOLO model.
 
@@ -91,6 +100,7 @@ def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device, workers, 
         workers (int): Number of workers for data loading.
         batch (int): Batch size for training.
         plots (bool): Plot training loss and mAP metrics.
+        resume (bool): Resume training if previous results exist.
     """
     # Load the YOLO model from the specified path.
     model = YOLO(model_path)
@@ -104,7 +114,11 @@ def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device, workers, 
         project=project_dir,  # Project directory to save logs and results.
         workers=workers,      # Number of workers for data loading.
         batch=batch,          # Batch size for training.
-        plots=plots           # Plot training loss and mAP metrics.
+        plots=plots,          # Plot training loss and mAP metrics.
+        optimizer='AdamW',    # Optimizer to use for training (None for default).
+        lr0=0.001,            # Initial learning rate.
+        patience=15,          # Number of epochs to wait before early stopping.
+        resume=resume         # Resume training if previous results exist.
     )
 
     return results
@@ -123,5 +137,6 @@ if __name__ == '__main__':
         device=args.device,
         workers=args.workers,
         batch=args.batch,
-        plots=args.plots
+        plots=args.plots,
+        resume=args.resume
     )
