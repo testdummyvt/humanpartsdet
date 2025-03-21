@@ -1,6 +1,23 @@
 import argparse
 from ultralytics import YOLO
 
+def check_device_format(input_str: str) -> list[int] | str:
+    """
+    Validate if device is 'cuda', 'cpu', or comma-separated integers.
+    Returns the input device if valid, raises ValueError otherwise.
+    """
+    if input_str in ['cuda', 'cpu']:
+        return input_str
+
+    # Split by comma and remove any whitespace
+    devices = [x.strip() for x in input_str.split(',')]
+    # Check if all devices are valid integers
+    try:
+        return [int(device) for device in devices]
+    except ValueError:
+        raise ValueError("Input must be 'cuda', 'cpu', or comma-separated integers (e.g., '1,2,3')")
+    
+
 def parse_arguments():
     """
     Parse command-line arguments.
@@ -49,7 +66,7 @@ def parse_arguments():
         "--device",
         type=str,
         default="cuda",
-        help="The device to run training on. Options: 'cpu', 'cuda'. Default: 'cuda'"
+        help="The device to run training on. Options: 'cpu', 'cuda', or '0,1'. Default: 'cuda'"
     )
 
     parser.add_argument(
@@ -102,6 +119,9 @@ def main(model_path, dataset_yaml, project_dir, epochs, imgsz, device, workers, 
         plots (bool): Plot training loss and mAP metrics.
         resume (bool): Resume training if previous results exist.
     """
+    # Check if device is valid
+    device = check_device_format(device)
+
     # Load the YOLO model from the specified path.
     model = YOLO(model_path)
     
