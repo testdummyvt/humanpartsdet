@@ -5,7 +5,7 @@ torch.cuda.empty_cache()
 
 if __name__ == "__main__":
 
-    dataset = "/home/ubuntu/data/cocohuman"
+    dataset = "/home/ubuntu/data/cocoformat"
     output_dir = "/home/ubuntu/checkpoints/chpyolo11x_train"
     model = RFDETRBase()
 
