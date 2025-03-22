@@ -30,6 +30,8 @@ def main(local_dataset_dir):
     # Download labels in parallel using 2 threads
     download([labels_train_url, labels_val_url], local_dataset_dir, threads=2)
 
+    download([labels_train_url], local_dataset_dir, threads=1)
+
     # Rename val folder to valid
     os.rename(os.path.join(local_dataset_dir, "val"), os.path.join(local_dataset_dir, "valid"))
 

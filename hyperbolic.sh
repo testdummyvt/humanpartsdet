@@ -8,5 +8,5 @@ source .venv/bin/activate
 uv sync
 
 
-python tools/yoloformat_download_dataset.py --local_dataset_dir ~/data/cocohuman
-python yolo11_train.py --model yolo11x --dataset /home/ubuntu/data/cocohuman/data.yaml --project /home/ubuntu/exp/yolo11x --workers 16 --batch 16
+# python tools/yoloformat_download_dataset.py --local_dataset_dir ~/data/cocohuman
+# python yolo11_train.py --model yolo11x --dataset /home/ubuntu/data/cocohuman/data.yaml --project /home/ubuntu/exp/yolo11x --workers 16 --batch 16

@@ -1,5 +1,7 @@
 from rfdetr import RFDETRBase
 
+import torch
+torch.cuda.empty_cache()
 
 if __name__ == "__main__":
 
@@ -12,4 +14,4 @@ if __name__ == "__main__":
         history.append(data)
     
     model.callbacks["on_fit_epoch_end"].append(callback2)
-    model.train(dataset_dir=dataset, epochs=10, batch_size=16, grad_accum_steps=4, lr=1e-4)
+    model.train(dataset_dir=dataset, epochs=10, batch_size=8, grad_accum_steps=4, lr=1e-4)
