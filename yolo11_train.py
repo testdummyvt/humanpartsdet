@@ -1,6 +1,7 @@
 import argparse
 from ultralytics import YOLO
 
+
 def check_device_format(input_str: str) -> list[int] | str:
     """
     Validate if device is 'cuda', 'cpu', or comma-separated integers.

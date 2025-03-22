@@ -6,6 +6,7 @@ torch.cuda.empty_cache()
 if __name__ == "__main__":
 
     dataset = "/home/ubuntu/data/cocohuman"
+    output_dir = "/home/ubuntu/checkpoints/chpyolo11x_train"
     model = RFDETRBase()
 
     history = []
@@ -14,4 +15,9 @@ if __name__ == "__main__":
         history.append(data)
     
     model.callbacks["on_fit_epoch_end"].append(callback2)
-    model.train(dataset_dir=dataset, epochs=10, batch_size=8, grad_accum_steps=4, lr=1e-4)
+    model.train(dataset_dir=dataset, output_dir = output_dir, epochs=10, batch_size=10, grad_accum_steps=4, lr=1e-4)
+
+    import pandas as pd
+    df = pd.DataFrame(history)
+
+    df.to_csv(f"{output_dir}/history.csv")
