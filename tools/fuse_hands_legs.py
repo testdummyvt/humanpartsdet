@@ -163,7 +163,6 @@ if __name__ == '__main__':
             process_coco_human_parts(input_path)
     elif format_type == 'yolo':
         update_data_yaml(datafolder)
-        exit()
         folders = glob(os.path.join(datafolder, "labels", "*"))
         for f in folders:
             # check if it is a directory 
